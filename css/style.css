@@ -323,6 +323,7 @@ li {
   background-color: var(--bg-overlay);
   transition: all 0.2s;
   display: flex; justify-content: center; align-items: center;
+  cursor: pointer;
 }
 
 .delbox:hover {
@@ -348,6 +349,7 @@ li {
   background-color: var(--bg-overlay);
   transition: all 0.2s;
   display: flex; justify-content: center; align-items: center;
+  cursor: pointer;
 }
 
 .checkbox:hover {
