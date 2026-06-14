@@ -157,6 +157,22 @@ h3 {
   outline: none;
 }
 
+#dates {
+  display: flex;
+  flex-direction: column;
+}
+
+.dateFormat {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.addElementDate {
+  display: block;
+  margin: 0px 0 25px 25px;
+}
+
 .addElementList input[type="radio"] {
   appearance: none;
   margin: 0;

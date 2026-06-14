@@ -9,15 +9,15 @@ function addTodoElement() {
   addTodoDivBody.id = "addTodoBody";
   addTodoDivBody.innerHTML = `
     <h3>Add a To-do!</h3>
-    <form action="#" method="GET">
-      <input class="addElement" type="text" placeholder="Title..." maxlength="255" required>
-      <input class="addElement" type="text" placeholder="Description..." maxlength="255">
+    <form action="index.html" method="GET">
+      <input class="addElement" id="getTitle" type="text" placeholder="Title..." maxlength="255" required>
+      <input class="addElement" id="getDesc" type="text" placeholder="Description..." maxlength="255">
       <div class="radioGroup">
         <label class="addElementList">
-          <input name="type" type="radio" value="0" checked> Task
+          <input name="type" type="radio" value="true" onclick="dateDisplay(this.value)" checked> Task
         </label>
         <label class="addElementList">
-          <input name="type" type="radio" value="1"> Event
+          <input name="type" type="radio" value="false" onclick="dateDisplay(this.value)"> Event
         </label>
       </div>
       <div class="radioGroup">
@@ -36,28 +36,46 @@ function addTodoElement() {
       </div>
       <div class="radioGroup">
         <label class="addElementList">
-          <input name="importance" type="radio" value="0" checked> Important
+          <input name="importance" type="radio" value="true" checked> Important
         </label>
         <label class="addElementList">
-          <input name="importance" type="radio" value="1"> Not Important
+          <input name="importance" type="radio" value="false"> Not Important
         </label>
       </div>
       <div class="radioGroup">
         <label class="addElementList">
-          <input name="urgency" type="radio" value="0" checked> Urgent
+          <input name="urgency" type="radio" value="true" checked> Urgent
         </label>
         <label class="addElementList">
-          <input name="urgency" type="radio" value="1"> Not Urgent
+          <input name="urgency" type="radio" value="false"> Not Urgent
         </label>
       </div>
+      <div id="dates"></div>
       <div class="submitButtons">
         <button type="button" class="cancel" onclick="closeAddTodoElement()">Cancel</button>
-        <button class="add">Add</button>
+        <button type="button" class="add" onclick="runAddTodoElement()">Add</button>
       </div>
     </form>
     `;
 
   container.appendChild(addTodoDivBody);
+}
+
+function dateDisplay(value) {
+  if (value == "false") {
+    document.getElementById("dates").innerHTML = `
+      <div class="dateFormat">
+        <label class="addElementDate">Starts...</label>
+        <input class="addElement" type="date">
+      </div>
+      <div class="dateFormat">
+        <label class="addElementDate">Ends...</label>
+        <input class="addElement" type="date">
+      </div>
+    `;
+  } else {
+    document.getElementById("dates").innerHTML = "";
+  }
 }
 
 function closeAddTodoElement() {
@@ -67,4 +85,15 @@ function closeAddTodoElement() {
   setTimeout(() => {
     document.getElementById("overlayContainer").innerHTML = "";
   }, 260);
+}
+
+function runAddTodoElement() {
+  let title = document.getElementById("getTitle").value;
+  let desc = document.getElementById("getDesc").value;
+  let type = document.querySelector("input[name='type']:checked").value === "true";
+  let category = (document.querySelector("input[name='category']:checked") != null) ? document.querySelector("input[name='category']:checked").value : "";
+  let importance = document.querySelector("input[name='importance']:checked").value === "true";
+  let urgency = document.querySelector("input[name='urgency']:checked").value === "true";
+  
+  console.log(title, desc, type, category, importance, urgency);
 }
