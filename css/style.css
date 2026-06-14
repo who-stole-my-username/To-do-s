@@ -1,0 +1,274 @@
+:root {
+  --bg: hsl(0, 100%, 98.24%);
+  --bg-2: hsl(0, 64.71%, 94.33%);
+  --color-comp: hsl(172.5, 45.57%, 69.02%);
+  --color-comp-hover: hsl(172.5, 45.57%, 59.02%);
+  --color-fail: hsl(6.82, 83.02%, 79.22%);
+  --color-fail-hover: hsl(6.82, 83.02%, 74.22%);
+  --color-hover: hsl(42, 62.5%, 93.73%);
+
+  --font-fam: "Fuzzy Bubbles", sans-serif;
+
+  --border: 2px solid #33322E;
+  --border-radius: 12px;
+  --box-shadow: 4px 4px 0 #33322E;
+}
+
+* {
+  font-size: 20px;
+  font-family: var(--font-fam);
+  font-weight: 700;
+}
+
+body {
+  background-color: var(--bg);
+  background-image: radial-gradient(circle, var(--bg-2) 3px, transparent 3px);
+  background-size: 24px 24px;
+  height: 100vh;
+  display: flex; flex-direction: row; justify-content: center; align-items: center;
+}
+
+#contentContainer {
+  position: relative;
+  height: 75vh; width: 50%;
+  margin: 25px;
+  background-color: white;
+  border: var(--border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.topBar {
+  position: relative;
+  width: 100%; height: 45px;
+  display: flex; justify-content: start; align-items: center;
+  border-bottom: var(--border);
+  overflow: hidden;
+}
+
+.bottomBar {
+  position: absolute;
+  bottom: 0;
+  width: 100%; height: 45px;
+  display: flex; justify-content: start; align-items: center;
+  border-top: var(--border);
+  overflow: hidden;
+}
+
+#mad {
+  font-size: 20px;
+  font-family: var(--font-fam);
+  font-weight: 700;
+  padding: 0 15px;
+  border: 0;
+  border-top-left-radius: var(--border-radius);
+  border-right: var(--border);
+  width: auto; height: 100%;
+  background-color: var(--color-comp);
+  cursor: pointer;
+  transition: background-color 0.5s;
+}
+
+#mad:hover {
+  background-color: var(--color-comp-hover);
+}
+
+#todoCounter {
+  font-size: 20px;
+  font-family: var(--font-fam);
+  font-weight: 700;
+  padding: 0 15px;
+}
+
+#newTodo {
+  position: absolute;
+  right: 0;
+  font-size: 20px;
+  font-family: var(--font-fam);
+  font-weight: 700;
+  padding: 0 15px;
+  border: 0;
+  border-bottom-right-radius: var(--border-radius);
+  border-left: var(--border);
+  width: auto; height: 100%;
+  background-color: var(--color-comp);
+  cursor: pointer;
+  transition: background-color 0.5s;
+}
+
+#newTodo:hover {
+  background-color: var(--color-comp-hover);
+}
+
+#search {
+  font-size: 20px;
+  font-family: var(--font-fam);
+  font-weight: 700;
+  padding:0 15px;
+  border: 0;
+  border-top-right-radius: var(--border-radius);
+  width: 100%; height: 100%;
+  transition: background-color 0.5s;
+}
+
+#search:hover {
+  background-color: var(--color-hover);
+}
+
+#addTodoBG {
+  position: fixed;
+  top: 0; bottom: 0; left: 0; right: 0;
+  background-color: rgba(51, 50, 46, .5);
+  z-index: 9999;
+  display: flex; justify-content: center; align-items: center;
+}
+
+#addTodoBody {  
+  font-size: 20px;
+  font-family: var(--font-fam);
+  font-weight: 700;
+  position: relative;
+  width: 90%; max-width: 400px;
+  margin: 25px;
+  background-color: white;
+  border: var(--border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  animation: popIn .4s cubic-bezier(.25, .46, .45, .94) both;
+}
+
+#addTodoBody.closing {
+  animation: popOut .3s cubic-bezier(.25, .46, .45, .94) both;
+}
+
+h3 {
+  font-size: 25px;
+  margin: 25px;
+}
+
+.addElement {
+  font-size: 20px;
+  font-family: var(--font-fam);
+  font-weight: 700;
+  width: 85%;
+  border: none;
+  background-color: white;
+  margin: 0px 25px 25px;
+  outline: none;
+}
+
+.addElementList input[type="radio"] {
+  appearance: none;
+  margin: 0;
+}
+
+.addElementList {
+  position: relative;
+  font-size: 20px;
+  font-family: var(--font-fam);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.addElementList::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--color-comp);
+  transform: scaleX(0);
+  transition: transform 0.2s ease;
+}
+
+.addElementList:has(input[type="radio"]:checked)::after {
+  transform: scaleX(1);
+}
+
+.radioGroup {
+  width: 85%;
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0 25px 25px;
+}
+
+.submitButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin: 0 25px 25px;
+}
+
+.submitButtons button {
+  border: none;
+  padding: 10px 15px;
+  border: var(--border);
+  border-radius: var(--border-radius);
+  transition: all 0.5s;
+}
+
+.submitButtons button[class="cancel"]:hover {
+  box-shadow: var(--box-shadow);
+  background-color: var(--color-fail-hover);
+}
+
+.submitButtons button[class="add"]:hover {
+  box-shadow: var(--box-shadow);
+  background-color: var(--color-comp-hover);
+}
+
+.submitButtons button[class="cancel"] {
+  background-color: var(--color-fail);
+}
+
+.submitButtons button[class="add"] {
+  background-color: var(--color-comp);
+}
+
+@keyframes popIn {
+  0% {
+      transform: scale3d(0, 0, 0);
+      opacity: 0;
+  }
+  20% {
+      opacity: 1;
+  }
+  40% {
+      animation-timing-function: cubic-bezier(.47, 0, .745, .715);
+      transform: scale3d(1.08, 1.08, 1.08);
+  }
+  60% {
+      animation-timing-function: cubic-bezier(.42, 0, .58, 1);
+      transform: scale3d(1, 1, 1);
+  }
+  80% {
+      animation-timing-function: cubic-bezier(.42, 0, .58, 1);
+      transform: scale3d(1.03, 1.03, 1.03);
+  }
+  100% {
+      animation-timing-function: cubic-bezier(.25, .46, .45, .94);
+      transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes popOut {
+  0% {
+    transform: scale3d(1, 1, 1);
+    opacity: 1;
+  }
+  20% {
+    transform: scale3d(1.03, 1.03, 1.03);
+  }
+  40% {
+    transform: scale3d(1, 1, 1);
+  }
+  60% {
+    transform: scale3d(0.8, 0.8, 0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale3d(0, 0, 0);
+    opacity: 0;
+  }
+}

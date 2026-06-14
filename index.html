@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Todo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/script.js"></script>
+  </head>
+  <body>
+    <div id="overlayContainer"></div>
+    <div id="contentContainer">
+      <div class="topBar">
+        <input id="mad" type="button" value="Mark All Done!">
+        <input id="search" type="text" placeholder="Search for To-do's..." maxlength="255">
+      </div>
+      <div class="bottomBar">
+        <p id="todoCounter">0% completed</P>
+        <input id="newTodo" onclick="addTodoElement()" type="button" value="Add a To-do!">
+      </div>
+    </div>
+  </body> 
+</html>
