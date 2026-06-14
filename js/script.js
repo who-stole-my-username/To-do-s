@@ -66,11 +66,11 @@ function dateDisplay(value) {
     document.getElementById("dates").innerHTML = `
       <div class="dateFormat">
         <label class="addElementDate">Starts...</label>
-        <input class="addElement" type="date">
+        <input class="addElement" id="getStartDate" type="date">
       </div>
       <div class="dateFormat">
         <label class="addElementDate">Ends...</label>
-        <input class="addElement" type="date">
+        <input class="addElement" id="getEndDate" type="date">
       </div>
     `;
   } else {
@@ -94,6 +94,27 @@ function runAddTodoElement() {
   let category = (document.querySelector("input[name='category']:checked") != null) ? document.querySelector("input[name='category']:checked").value : "";
   let importance = document.querySelector("input[name='importance']:checked").value === "true";
   let urgency = document.querySelector("input[name='urgency']:checked").value === "true";
+  let startDate = "";
+  let endDate = "";
+
+
+  if (type == false) {
+    startDate = document.getElementById("getStartDate").value;
+    endDate = document.getElementById("getEndDate").value;
+    let splitStartDate = startDate.split("-");
+    let splitEndDate = endDate.split("-");
+    let intStartDate = [];
+    let intEndDate = [];
+
+    for (let i = 0; i < 3; i++) {
+      intStartDate.push(parseInt(splitStartDate[i]));
+      intEndDate.push(parseInt(splitEndDate[i]));
+    }
+
+    if ((intStartDate[0] + intStartDate[1] + intStartDate[2]) > (intEndDate[0] + intEndDate[1] + intEndDate[2])) {
+      console.log("Error");
+    }
+  }
   
-  console.log(title, desc, type, category, importance, urgency);
+  console.log(title, desc, type, category, importance, urgency, startDate, endDate);
 }
