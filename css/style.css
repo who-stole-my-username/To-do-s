@@ -198,6 +198,12 @@ h3 {
   transition: transform 0.2s ease;
 }
 
+.error {
+  margin: 0 25px 25px;
+  color: red;
+  font-size: 20px;
+}
+
 .addElementList:has(input[type="radio"]:checked)::after {
   transform: scaleX(1);
 }
