@@ -1,3 +1,17 @@
+let todos = JSON.parse(localStorage.getItem("todos")) || [];
+
+function saveTodos() {
+  localStorage.setItem("todos", JSON.stringify(todos));
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  for (let i = 0; i < todos.length; i++) {
+    if (todos[i].type == true) {
+      addTaskToList(todos[i].title, todos[i].desc, todos[i].type, todos[i].category, todos[i].importance, todos[i].urgency);
+    }
+  }
+});
+
 function addTodoElement() {
   const addTodoDiv = document.createElement("div");
   let container = document.getElementById("overlayContainer");
@@ -97,12 +111,12 @@ function runAddTodoElement() {
   let endDate = "";
 
   if (title == "") {
-    document.getElementById("errorMessages").innerHTML = "<p class='error'>Enter a title!</P>";
+    document.getElementById("errorMessages").innerHTML = "<p class='error'>Enter a title!</p>";
     return;
   }
 
   if (title.length > 255) {
-    document.getElementById("errorMessages").innerHTML = "<p class='error'>Title to long!</P>";
+    document.getElementById("errorMessages").innerHTML = "<p class='error'>Title to long!</p>";
     return;
   }
 
@@ -133,11 +147,18 @@ function runAddTodoElement() {
 
   document.getElementById("errorMessages").innerHTML = "";
   
+  let todo = {};
+
   if (type == true) {
     addTaskToList(title, desc, type, category, importance, urgency);
+    todo = { title, desc, type, category, importance, urgency };
   } else if (type == false) {
     //addEventTo List(title, desc, type, category, importance, urgency, startDate, endDate);
+    //todo = { title, desc, type, category, importance, urgency, startDate, endDate };
   }
+
+  todos.push(todo);
+  saveTodos();
 
   const body = document.getElementById("addTodoBody");
   body.classList.add("closing");
@@ -185,5 +206,17 @@ function addTaskToList(title, desc, type, category, importance, urgency) {
 }
 
 function removeTodo(delbox) {
-  delbox.closest("li").remove();
+  let li = delbox.closest("li");
+  let allLi = document.querySelectorAll("#todoListE li");
+
+  let index = 0;
+  for (let i = 0; i < allLi.length; i++) {
+    if (allLi[i] == li) {
+      index = i;
+    }
+  }
+
+  todos.splice(index, 1);
+  saveTodos();
+  li.remove();
 }
