@@ -1,4 +1,5 @@
 let todos = JSON.parse(localStorage.getItem("todos")) || [];
+let checkImg = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAyNCAxOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIuMzYzMTcgOS42NzUwNkMxLjU1OTM5IDkuNDc0NDkgMC43NDUyMDQgOS45NjM0OCAwLjU0NDYyOSAxMC43NjczQzAuMzQ0MDU0IDExLjU3MSAwLjgzMzA0NyAxMi4zODUyIDEuNjM2ODMgMTIuNTg1OEwyLjM2MzE3IDkuNjc1MDZaTTguMTU4NzMgMTZMNi43ODA0MSAxNi41OTE4QzcuMDMwOTggMTcuMTc1NCA3LjYyMTk1IDE3LjUzNzkgOC4yNTU3NSAxNy40OTY5QzguODg5NTQgMTcuNDU1OCA5LjQyODc3IDE3LjAyIDkuNjAxOTEgMTYuNDA4OUw4LjE1ODczIDE2Wk0yMi4zMjYxIDMuNDY0MTNDMjMuMTM0NyAzLjI4NDA2IDIzLjY0NDIgMi40ODI1NyAyMy40NjQxIDEuNjczOTVDMjMuMjg0MSAwLjg2NTMyOCAyMi40ODI2IDAuMzU1NzkxIDIxLjY3MzkgMC41MzU4NjZMMjIuMzI2MSAzLjQ2NDEzWk0xLjYzNjgzIDEyLjU4NThDMi4wMjc2NCAxMi42ODMzIDMuMTIyOTkgMTMuMTUxIDQuMjc3OCAxMy45NDI2QzUuNDM5ODggMTQuNzM5MyA2LjM4OTA2IDE1LjY4MDMgNi43ODA0MSAxNi41OTE4TDkuNTM3MDUgMTUuNDA4MkM4LjgxMDk0IDEzLjcxNzEgNy4zMDE1NyAxMi4zNzgzIDUuOTc0MDYgMTEuNDY4MkM0LjYzOTI3IDEwLjU1MzIgMy4yMTM5OSA5Ljg4NzM4IDIuMzYzMTcgOS42NzUwNkwxLjYzNjgzIDEyLjU4NThaTTkuNjAxOTEgMTYuNDA4OUMxMC4xMzU5IDE0LjUyNDQgMTEuNDk0OCAxMS42NTg1IDEzLjY3MjcgOS4wNjM5NUMxNS44NDQ1IDYuNDc2NzUgMTguNzQxNyA0LjI2MjM1IDIyLjMyNjEgMy40NjQxM0wyMS42NzM5IDAuNTM1ODY2QzE3LjI1ODMgMS41MTkyIDEzLjgyNzUgNC4yMTM0MiAxMS4zNzQ5IDcuMTM1MTRDOC45Mjg1MiAxMC4wNDk1IDcuMzY2NzQgMTMuMjkyOSA2LjcxNTU1IDE1LjU5MTFMOS42MDE5MSAxNi40MDg5WiIgZmlsbD0iIzMzMzIyRSIvPgo8L3N2Zz4K"
 
 function saveTodos() {
   localStorage.setItem("todos", JSON.stringify(todos));
@@ -7,7 +8,7 @@ function saveTodos() {
 document.addEventListener("DOMContentLoaded", function() {
   for (let i = 0; i < todos.length; i++) {
     if (todos[i].type == true) {
-      addTaskToList(todos[i].title, todos[i].desc, todos[i].type, todos[i].category, todos[i].importance, todos[i].urgency);
+      addTaskToList(todos[i].title, todos[i].desc, todos[i].type, todos[i].category, todos[i].importance, todos[i].urgency, todos[i].done, todos[i].done);
     }
   }
 });
@@ -120,6 +121,11 @@ function runAddTodoElement() {
     return;
   }
 
+  if (desc.length > 255) {
+    document.getElementById("errorMessages").innerHTML = "<p class='error'>Description to long!</p>";
+    return;
+  }
+
   if (type == false) {
     startDate = document.getElementById("getStartDate").value;
     endDate = document.getElementById("getEndDate").value;
@@ -151,10 +157,10 @@ function runAddTodoElement() {
 
   if (type == true) {
     addTaskToList(title, desc, type, category, importance, urgency);
-    todo = { title, desc, type, category, importance, urgency };
+    todo = { title, desc, type, category, importance, urgency, done: false };
   } else if (type == false) {
     //addEventTo List(title, desc, type, category, importance, urgency, startDate, endDate);
-    //todo = { title, desc, type, category, importance, urgency, startDate, endDate };
+    //todo = { title, desc, type, category, importance, urgency, startDate, endDate, done: false };
   }
 
   todos.push(todo);
@@ -168,7 +174,7 @@ function runAddTodoElement() {
   }, 260);
 }
 
-function addTaskToList(title, desc, type, category, importance, urgency) {
+function addTaskToList(title, desc, type, category, importance, urgency, done) {
   let prio = "";
   if (importance == true && urgency == true) {
     prio = "Do it now!";
@@ -186,9 +192,9 @@ function addTaskToList(title, desc, type, category, importance, urgency) {
   let li = document.createElement("li");
 
   li.innerHTML = `
-    <div class="todoListElement">
-      <div class="checkbox" onclick="checkTodo(this)">
-        <img id="mac" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAyNCAxOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIuMzYzMTcgOS42NzUwNkMxLjU1OTM5IDkuNDc0NDkgMC43NDUyMDQgOS45NjM0OCAwLjU0NDYyOSAxMC43NjczQzAuMzQ0MDU0IDExLjU3MSAwLjgzMzA0NyAxMi4zODUyIDEuNjM2ODMgMTIuNTg1OEwyLjM2MzE3IDkuNjc1MDZaTTguMTU4NzMgMTZMNi43ODA0MSAxNi41OTE4QzcuMDMwOTggMTcuMTc1NCA3LjYyMTk1IDE3LjUzNzkgOC4yNTU3NSAxNy40OTY5QzguODg5NTQgMTcuNDU1OCA5LjQyODc3IDE3LjAyIDkuNjAxOTEgMTYuNDA4OUw4LjE1ODczIDE2Wk0yMi4zMjYxIDMuNDY0MTNDMjMuMTM0NyAzLjI4NDA2IDIzLjY0NDIgMi40ODI1NyAyMy40NjQxIDEuNjczOTVDMjMuMjg0MSAwLjg2NTMyOCAyMi40ODI2IDAuMzU1NzkxIDIxLjY3MzkgMC41MzU4NjZMMjIuMzI2MSAzLjQ2NDEzWk0xLjYzNjgzIDEyLjU4NThDMi4wMjc2NCAxMi42ODMzIDMuMTIyOTkgMTMuMTUxIDQuMjc3OCAxMy45NDI2QzUuNDM5ODggMTQuNzM5MyA2LjM4OTA2IDE1LjY4MDMgNi43ODA0MSAxNi41OTE4TDkuNTM3MDUgMTUuNDA4MkM4LjgxMDk0IDEzLjcxNzEgNy4zMDE1NyAxMi4zNzgzIDUuOTc0MDYgMTEuNDY4MkM0LjYzOTI3IDEwLjU1MzIgMy4yMTM5OSA5Ljg4NzM4IDIuMzYzMTcgOS42NzUwNkwxLjYzNjgzIDEyLjU4NThaTTkuNjAxOTEgMTYuNDA4OUMxMC4xMzU5IDE0LjUyNDQgMTEuNDk0OCAxMS42NTg1IDEzLjY3MjcgOS4wNjM5NUMxNS44NDQ1IDYuNDc2NzUgMTguNzQxNyA0LjI2MjM1IDIyLjMyNjEgMy40NjQxM0wyMS42NzM5IDAuNTM1ODY2QzE3LjI1ODMgMS41MTkyIDEzLjgyNzUgNC4yMTM0MiAxMS4zNzQ5IDcuMTM1MTRDOC45Mjg1MiAxMC4wNDk1IDcuMzY2NzQgMTMuMjkyOSA2LjcxNTU1IDE1LjU5MTFMOS42MDE5MSAxNi40MDg5WiIgZmlsbD0iIzMzMzIyRSIvPgo8L3N2Zz4K" alt="Mark as Incomplete" draggable="false">
+    <div class="todoListElement ${done ? "done" : ""}">
+      <div class="checkbox ${done ? "done" : ""}" data-done="${done ? "true" : "false"}" onclick="checkTodo(this)">
+        ${done ? `<img id="mac" src="${checkImg}" alt="Mark as Complete" draggable="false">` : ""}
       </div>
       <div class="todoListElementContent">
         <p class="todoListElementContentText">${title} (${typeString})</p>
@@ -219,4 +225,34 @@ function removeTodo(delbox) {
   todos.splice(index, 1);
   saveTodos();
   li.remove();
+}
+
+function checkTodo(checkbox) {
+  let isDone = checkbox.dataset.done === "true";
+  let todoElement = checkbox.closest(".todoListElement");
+  let li = checkbox.closest("li");
+  let allLi = document.querySelectorAll("#todoListE li");
+
+  let index = 0;
+  for (let i = 0; i < allLi.length; i++) {
+    if (allLi[i] == li) {
+      index = i;
+    }
+  }
+
+  if (isDone) {
+    checkbox.innerHTML = "";
+    checkbox.dataset.done = "false";
+    todoElement.classList.remove("done");
+    checkbox.classList.remove("done");
+    todos[index].done = false;
+  } else {
+    checkbox.innerHTML = `<img id="mac" src="${checkImg}" alt="Mark as Complete" draggable="false">`;
+    checkbox.dataset.done = "true";
+    todoElement.classList.add("done");
+    checkbox.classList.add("done");
+    todos[index].done = true;
+  }
+
+  saveTodos();
 }

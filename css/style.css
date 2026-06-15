@@ -5,6 +5,7 @@
   --bg-overlay-2: hsl(42, 62.5%, 93.73%);
   --color-comp: hsl(172.5, 45.57%, 69.02%);
   --color-comp-hover: hsl(172.5, 45.57%, 59.02%);
+  --color-checked: hsl(173.33, 62.07%, 88.63%);
   --color-fail: hsl(6.82, 83.02%, 79.22%);
   --color-fail-hover: hsl(6.82, 83.02%, 74.22%);
   --color-search: hsl(332.2, 100%, 91.96%);
@@ -315,6 +316,10 @@ li {
   box-shadow: none;
 }
 
+.todoListElement.done {
+  background-color: var(--color-checked);
+}
+
 .delbox {
   width: 30px; height: 30px;
   flex-shrink: 0;
@@ -354,6 +359,10 @@ li {
 
 .checkbox:hover {
   box-shadow: var(--box-shadow);
+  background-color: var(--color-comp);
+}
+
+.checkbox.done {
   background-color: var(--color-comp);
 }
 
