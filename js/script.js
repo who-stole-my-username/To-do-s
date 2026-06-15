@@ -8,9 +8,10 @@ function saveTodos() {
 document.addEventListener("DOMContentLoaded", function() {
   for (let i = 0; i < todos.length; i++) {
     if (todos[i].type == true) {
-      addTaskToList(todos[i].title, todos[i].desc, todos[i].type, todos[i].category, todos[i].importance, todos[i].urgency, todos[i].done, todos[i].done);
+      addTaskToList(todos[i].title, todos[i].desc, todos[i].type, todos[i].category, todos[i].importance, todos[i].urgency, todos[i].done);
     }
   }
+  todoCounter();
 });
 
 function addTodoElement() {
@@ -165,6 +166,7 @@ function runAddTodoElement() {
 
   todos.push(todo);
   saveTodos();
+  todoCounter();
 
   const body = document.getElementById("addTodoBody");
   body.classList.add("closing");
@@ -225,6 +227,7 @@ function removeTodo(delbox) {
   todos.splice(index, 1);
   saveTodos();
   li.remove();
+  todoCounter();
 }
 
 function checkTodo(checkbox) {
@@ -255,4 +258,17 @@ function checkTodo(checkbox) {
   }
 
   saveTodos();
+  todoCounter();
+}
+
+function todoCounter() {
+  let totalTodos = todos.length;
+  let checkedTodos = todos.filter(checkCheck).length;
+  let totalPercentage = Math.round(checkedTodos / totalTodos * 100);
+
+  document.getElementById("todoCounter").innerHTML = totalPercentage + "% completed";
+}
+
+function checkCheck(todo) {
+  return todo.done === true;
 }
