@@ -272,3 +272,13 @@ function todoCounter() {
 function checkCheck(todo) {
   return todo.done === true;
 }
+
+function MarkAllDone() {
+  let allTodos = document.querySelectorAll("#todoListE .checkbox");
+
+  for (let i = 0; i < allTodos.length; i++) {
+    if (allTodos[i].dataset.done === "false") {
+      checkTodo(allTodos[i]);
+    }
+  }
+}
