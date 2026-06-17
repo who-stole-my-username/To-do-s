@@ -309,7 +309,7 @@ li {
   box-shadow: var(--box-shadow);
   padding: 15px 15px 20px;
   transition: all 0.2s;
-  display: flex; flex-direction: row; align-items: center;*/
+  display: flex; flex-direction: row; align-items: center;
 }
 
 .todoListElement:hover {
@@ -344,6 +344,14 @@ li {
   position: relative;
   bottom: 3px; left: 6px;
   width: 26px; height: auto;
+}
+
+#penImg {
+  width: 17px; height: auto;
+}
+
+#calImg {
+  width: 17px; height: auto;
 }
 
 .checkbox {
