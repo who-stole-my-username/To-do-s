@@ -15,6 +15,10 @@ document.addEventListener("DOMContentLoaded", function() {
       addEventToList(todos[i].title, todos[i].desc, todos[i].type, todos[i].category, todos[i].importance, todos[i].urgency, todos[i].startDate, todos[i].endDate, todos[i].done);
     }
   }
+  document.getElementById("search").addEventListener("input", function() {
+    searchTodos(this.value);
+  });
+
   todoCounter();
 });
 
@@ -324,6 +328,27 @@ function MarkAllDone() {
   for (let i = 0; i < allTodos.length; i++) {
     if (allTodos[i].dataset.done === "false") {
       checkTodo(allTodos[i]);
+    }
+  }
+}
+
+function searchTodos(query) {
+  let allLi = document.querySelectorAll("#todoListE li");
+
+  if (query == "") {
+    for (let i = 0; i < allLi.length; i++) {
+      allLi[i].style.display = "";
+    }
+    return;
+  }
+
+  let regex = new RegExp(query, "i");
+
+  for (let i = 0; i < allLi.length; i++) {
+    if (regex.test(todos[i].title)) {
+      allLi[i].style.display = "";
+    } else {
+      allLi[i].style.display = "none";
     }
   }
 }
