@@ -1,4 +1,5 @@
 let todos = JSON.parse(localStorage.getItem("todos")) || [];
+let editIndex = null;
 let checkImg = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAyNCAxOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIuMzYzMTcgOS42NzUwNkMxLjU1OTM5IDkuNDc0NDkgMC43NDUyMDQgOS45NjM0OCAwLjU0NDYyOSAxMC43NjczQzAuMzQ0MDU0IDExLjU3MSAwLjgzMzA0NyAxMi4zODUyIDEuNjM2ODMgMTIuNTg1OEwyLjM2MzE3IDkuNjc1MDZaTTguMTU4NzMgMTZMNi43ODA0MSAxNi41OTE4QzcuMDMwOTggMTcuMTc1NCA3LjYyMTk1IDE3LjUzNzkgOC4yNTU3NSAxNy40OTY5QzguODg5NTQgMTcuNDU1OCA5LjQyODc3IDE3LjAyIDkuNjAxOTEgMTYuNDA4OUw4LjE1ODczIDE2Wk0yMi4zMjYxIDMuNDY0MTNDMjMuMTM0NyAzLjI4NDA2IDIzLjY0NDIgMi40ODI1NyAyMy40NjQxIDEuNjczOTVDMjMuMjg0MSAwLjg2NTMyOCAyMi40ODI2IDAuMzU1NzkxIDIxLjY3MzkgMC41MzU4NjZMMjIuMzI2MSAzLjQ2NDEzWk0xLjYzNjgzIDEyLjU4NThDMi4wMjc2NCAxMi42ODMzIDMuMTIyOTkgMTMuMTUxIDQuMjc3OCAxMy45NDI2QzUuNDM5ODggMTQuNzM5MyA2LjM4OTA2IDE1LjY4MDMgNi43ODA0MSAxNi41OTE4TDkuNTM3MDUgMTUuNDA4MkM4LjgxMDk0IDEzLjcxNzEgNy4zMDE1NyAxMi4zNzgzIDUuOTc0MDYgMTEuNDY4MkM0LjYzOTI3IDEwLjU1MzIgMy4yMTM5OSA5Ljg4NzM4IDIuMzYzMTcgOS42NzUwNkwxLjYzNjgzIDEyLjU4NThaTTkuNjAxOTEgMTYuNDA4OUMxMC4xMzU5IDE0LjUyNDQgMTEuNDk0OCAxMS42NTg1IDEzLjY3MjcgOS4wNjM5NUMxNS44NDQ1IDYuNDc2NzUgMTguNzQxNyA0LjI2MjM1IDIyLjMyNjEgMy40NjQxM0wyMS42NzM5IDAuNTM1ODY2QzE3LjI1ODMgMS41MTkyIDEzLjgyNzUgNC4yMTM0MiAxMS4zNzQ5IDcuMTM1MTRDOC45Mjg1MiAxMC4wNDk1IDcuMzY2NzQgMTMuMjkyOSA2LjcxNTU1IDE1LjU5MTFMOS42MDE5MSAxNi40MDg5WiIgZmlsbD0iIzMzMzIyRSIvPgo8L3N2Zz4K"
 let penImg = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMzMzMyMkUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTEgNEg0YTIgMiAwIDAgMC0yIDJ2MTRhMiAyIDAgMCAwIDIgMmgxNGEyIDIgMCAwIDAgMi0ydi03Ii8+PHBhdGggZD0iTTE4LjUgMi41YTIuMTIxIDIuMTIxIDAgMCAxIDMgM0wxMiAxNWwtNCAxIDEtNCAyLjUtMi41Ii8+PC9zdmc+";
 let calImg = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMzMzMyMkUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSIzIiB5PSI0IiB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHJ4PSIyIiByeT0iMiIvPjxsaW5lIHgxPSIxNiIgeTE9IjIiIHgyPSIxNiIgeTI9IjYiLz48bGluZSB4MT0iOCIgeTE9IjIiIHgyPSI4IiB5Mj0iNiIvPjxsaW5lIHgxPSIzIiB5MT0iMTAiIHgyPSIyMSIgeTI9IjEwIi8+PC9zdmc+";
@@ -8,13 +9,7 @@ function saveTodos() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-  for (let i = 0; i < todos.length; i++) {
-    if (todos[i].type == true) {
-      addTaskToList(todos[i].title, todos[i].desc, todos[i].type, todos[i].category, todos[i].importance, todos[i].urgency, "", "", todos[i].done);
-    } else {
-      addEventToList(todos[i].title, todos[i].desc, todos[i].type, todos[i].category, todos[i].importance, todos[i].urgency, todos[i].startDate, todos[i].endDate, todos[i].done);
-    }
-  }
+  renderTodos();
   document.getElementById("search").addEventListener("input", function() {
     searchTodos(this.value);
   });
@@ -22,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
   todoCounter();
 });
 
-function addTodoElement() {
+function addTodoElement(todo = null) {
   const addTodoDiv = document.createElement("div");
   let container = document.getElementById("overlayContainer");
   addTodoDiv.id = "addTodoBG";
@@ -32,56 +27,67 @@ function addTodoElement() {
   container = document.getElementById("addTodoBG");
   addTodoDivBody.id = "addTodoBody";
   addTodoDivBody.innerHTML = `
-    <h3>Add a To-do!</h3>
+    <h3>${todo ? "Edit your To-do!" : "Add a To-do!"}</h3>
     <input class="addElement" id="getTitle" type="text" placeholder="Title..." maxlength="255" required>
     <input class="addElement" id="getDesc" type="text" placeholder="Description..." maxlength="255">
     <div class="radioGroup">
       <label class="addElementList">
-        <input name="type" type="radio" value="true" onclick="dateDisplay(this.value)" checked> Task
+        <input name="type" type="radio" value="true" onclick="dateDisplay(this.value)" ${!todo || todo.type ? "checked" : ""}> Task
       </label>
       <label class="addElementList">
-        <input name="type" type="radio" value="false" onclick="dateDisplay(this.value)"> Event
-      </label>
-    </div>
-    <div class="radioGroup">
-      <label class="addElementList">
-        <input name="category" type="radio" value="Sport"> Sport
-      </label>
-      <label class="addElementList">
-        <input name="category" type="radio" value="Leisure time"> Leisure time
-      </label>
-      <label class="addElementList">
-        <input name="category" type="radio" value="Art"> Art
-      </label>
-      <label class="addElementList">
-        <input name="category" type="radio" value="Travel"> Travel
+        <input name="type" type="radio" value="false" onclick="dateDisplay(this.value)" ${todo && !todo.type ? "checked" : ""}> Event
       </label>
     </div>
     <div class="radioGroup">
       <label class="addElementList">
-        <input name="importance" type="radio" value="true" checked> Important
+        <input name="category" type="radio" value="Sport" ${todo?.category === "Sport" ? "checked" : ""}> Sport
       </label>
       <label class="addElementList">
-        <input name="importance" type="radio" value="false"> Not Important
+        <input name="category" type="radio" value="Leisure time" ${todo?.category === "Leisure time" ? "checked" : ""}> Leisure time
+      </label>
+      <label class="addElementList">
+        <input name="category" type="radio" value="Art" ${todo?.category === "Art" ? "checked" : ""}> Art
+      </label>
+      <label class="addElementList">
+        <input name="category" type="radio" value="Travel" ${todo?.category === "Travel" ? "checked" : ""}> Travel
       </label>
     </div>
     <div class="radioGroup">
       <label class="addElementList">
-        <input name="urgency" type="radio" value="true" checked> Urgent
+        <input name="importance" type="radio" value="true" ${!todo || todo.importance ? "checked" : ""}> Important
       </label>
       <label class="addElementList">
-        <input name="urgency" type="radio" value="false"> Not Urgent
+        <input name="importance" type="radio" value="false" ${todo && !todo.importance ? "checked" : ""}> Not Important
+      </label>
+    </div>
+    <div class="radioGroup">
+      <label class="addElementList">
+        <input name="urgency" type="radio" value="true" ${!todo || todo.urgency ? "checked" : ""}> Urgent
+      </label>
+      <label class="addElementList">
+        <input name="urgency" type="radio" value="false" ${todo && !todo.urgency ? "checked" : ""}> Not Urgent
       </label>
     </div>
     <div id="dates"></div>
     <div id="errorMessages"></div>
     <div class="submitButtons">
       <button type="button" class="cancel" onclick="closeAddTodoElement()">Cancel</button>
-      <button type="button" class="add" onclick="runAddTodoElement()">Add</button>
+      <button type="button" class="add" onclick="runAddTodoElement()">${todo ? "Save" : "Add"}</button>
     </div>
     `;
 
   container.appendChild(addTodoDivBody);
+
+  if (todo) {
+    document.getElementById("getTitle").value = todo.title;
+    document.getElementById("getDesc").value = todo.desc;
+
+    if (!todo.type) {
+      dateDisplay("false");
+      document.getElementById("getStartDate").value = todo.startDate;
+      document.getElementById("getEndDate").value = todo.endDate;
+    }
+  }
 }
 
 function dateDisplay(value) {
@@ -102,6 +108,7 @@ function dateDisplay(value) {
 }
 
 function closeAddTodoElement() {
+  editIndex = null;
   const body = document.getElementById("addTodoBody");
   body.classList.add("closing");
 
@@ -164,15 +171,20 @@ function runAddTodoElement() {
   let todo = {};
 
   if (type == true) {
-    addTaskToList(title, desc, type, category, importance, urgency, "", "", false);
     todo = { title, desc, type, category, importance, urgency, done: false };
   } else if (type == false) {
-    addEventToList(title, desc, type, category, importance, urgency, startDate, endDate, false);
     todo = { title, desc, type, category, importance, urgency, startDate, endDate, done: false };
   }
 
+  if (editIndex !== null) {
+  todos[editIndex] = todo;
+  editIndex = null;
+  } else {
   todos.push(todo);
+  }
+
   saveTodos();
+  renderTodos();
   todoCounter();
 
   const body = document.getElementById("addTodoBody");
@@ -205,7 +217,7 @@ function addTaskToList(title, desc, type, category, importance, urgency, startDa
       <div class="checkbox ${done ? "done" : ""}" data-done="${done ? "true" : "false"}" onclick="checkTodo(this)">
         ${done ? `<img id="mac" src="${checkImg}" alt="Mark as Complete" draggable="false">` : ""}
       </div>
-      <div class="todoListElementContent">
+      <div class="todoListElementContent" onclick="editTodoElement(this)">
         <p class="todoListElementContentText">${title} <img id="penImg" src="${penImg}" alt="penImg" draggable="false"></p>
         <p class="todoListElementContentTextSmall">${prio}</p>
         <p class="todoListElementContentTextSmall">${desc}</p>
@@ -242,7 +254,7 @@ function addEventToList(title, desc, type, category, importance, urgency, startD
       <div class="checkbox ${done ? "done" : ""}" data-done="${done ? "true" : "false"}" onclick="checkTodo(this)">
         ${done ? `<img id="mac" src="${checkImg}" alt="Mark as Complete" draggable="false">` : ""}
       </div>
-      <div class="todoListElementContent">
+      <div class="todoListElementContent" onclick="editTodoElement(this)">
         <p class="todoListElementContentText">${title} <img id="calImg" src="${calImg}" alt="calImg" draggable="false"></p>
         <p class="todoListElementContentTextSmall">${prio}</p>
         <p class="todoListElementContentTextSmall">${desc}</p>
@@ -349,6 +361,33 @@ function searchTodos(query) {
       allLi[i].style.display = "";
     } else {
       allLi[i].style.display = "none";
+    }
+  }
+}
+
+function editTodoElement(content) {
+  let li = content.closest("li");
+  let allLi = document.querySelectorAll("#todoListE li");
+
+  let index = 0;
+  for (let i = 0; i < allLi.length; i++) {
+    if (allLi[i] == li) {
+      index = i;
+    }
+  }
+
+  editIndex = index;
+  addTodoElement(todos[index]);
+}
+
+function renderTodos() {
+  document.getElementById("todoListE").innerHTML = "";
+
+  for (let i = 0; i < todos.length; i++) {
+    if (todos[i].type == true) {
+      addTaskToList(todos[i].title, todos[i].desc, todos[i].type, todos[i].category, todos[i].importance, todos[i].urgency, "", "", todos[i].done);
+    } else {
+      addEventToList(todos[i].title, todos[i].desc, todos[i].type, todos[i].category, todos[i].importance, todos[i].urgency, todos[i].startDate, todos[i].endDate, todos[i].done);
     }
   }
 }
